@@ -22,6 +22,7 @@ import com.example.newsbank.viewmodel.NewsViewModel
 import com.example.newsbank.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -29,7 +30,7 @@ class HomeNewsFragment : Fragment() {
 
     lateinit var binding: FragmentHomeNewsBinding
     private val newsViewModel: NewsViewModel by viewModels()
-    private val sharedViewModel : SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,8 +47,8 @@ class HomeNewsFragment : Fragment() {
         binding.newsRecyclerView.adapter = newsAdapter
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        newsViewModel.liveNewsList.observe(viewLifecycleOwner, Observer {
-            newsAdapter.submitList(it.articles)
+        newsViewModel.liveNewsList.observe(viewLifecycleOwner, Observer { news ->
+            newsAdapter.submitList(news.articles)
         })
 
         return binding.root
