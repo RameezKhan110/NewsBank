@@ -1,7 +1,7 @@
-package com.example.newsbank.api
+package com.example.newsbank.data.api
 
 import com.example.newsbank.utils.Constants
-import com.example.newsbank.model.NewsArticle
+import com.example.newsbank.data.model.NewsArticle
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

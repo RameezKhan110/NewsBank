@@ -1,4 +1,4 @@
-package com.example.newsbank
+package com.example.newsbank.di
 
 import okhttp3.Interceptor
 import okhttp3.Response

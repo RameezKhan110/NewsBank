@@ -1,13 +1,13 @@
 package com.example.newsbank.di
 
-import com.example.newsbank.AuthInterceptor
-import com.example.newsbank.api.NewsApiService
+import com.example.newsbank.data.api.NewsApiService
+import com.example.newsbank.data.repository.NewsRepositoryImpl
+import com.example.newsbank.domain.repository.NewsRepository
 import com.example.newsbank.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -41,5 +41,8 @@ object NetworkModule {
 
     @Provides
     fun providesNewsApiService(retrofit: Retrofit): NewsApiService = retrofit.create()
+
+    @Provides
+    fun providesNewsRepository(newsApiService: NewsApiService): NewsRepository = NewsRepositoryImpl(newsApiService)
 
 }

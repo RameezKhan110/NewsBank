@@ -1,4 +1,4 @@
-package com.example.newsbank.adapter
+package com.example.newsbank.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsbank.databinding.NewsItemBinding
-import com.example.newsbank.model.Article
+import com.example.newsbank.data.model.Article
 
 class NewsAdapter(
     private val onDetailClicked: (String) -> Unit

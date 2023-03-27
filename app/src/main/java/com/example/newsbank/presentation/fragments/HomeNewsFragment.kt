@@ -1,4 +1,4 @@
-package com.example.newsbank.fragments
+package com.example.newsbank.presentation.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -16,10 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsbank.R
-import com.example.newsbank.adapter.NewsAdapter
+import com.example.newsbank.presentation.adapter.NewsAdapter
 import com.example.newsbank.databinding.FragmentHomeNewsBinding
-import com.example.newsbank.viewmodel.NewsViewModel
-import com.example.newsbank.viewmodel.SharedViewModel
+import com.example.newsbank.presentation.viewmodel.NewsViewModel
+import com.example.newsbank.presentation.viewmodel.SharedViewModel
+import com.example.newsbank.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -48,7 +49,21 @@ class HomeNewsFragment : Fragment() {
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         newsViewModel.liveNewsList.observe(viewLifecycleOwner, Observer { news ->
-            newsAdapter.submitList(news.articles)
+            when (news.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.newsRecyclerView.visibility = View.VISIBLE
+                    newsAdapter.submitList(news.data?.articles)
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.newsRecyclerView.visibility = View.GONE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.newsRecyclerView.visibility = View.VISIBLE
+                }
+            }
         })
 
         return binding.root

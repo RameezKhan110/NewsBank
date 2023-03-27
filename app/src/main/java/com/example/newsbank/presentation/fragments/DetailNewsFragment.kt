@@ -1,4 +1,4 @@
-package com.example.newsbank.fragments
+package com.example.newsbank.presentation.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.newsbank.R
 import com.example.newsbank.databinding.FragmentDetailNewsBinding
-import com.example.newsbank.viewmodel.SharedViewModel
+import com.example.newsbank.presentation.viewmodel.SharedViewModel
 
 
 class DetailNewsFragment : Fragment() {

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeNewsFragment"
-        android:name="com.example.newsbank.fragments.HomeNewsFragment"
+        android:name="com.example.newsbank.presentation.fragments.HomeNewsFragment"
         android:label="fragment_home_news"
         tools:layout="@layout/fragment_home_news" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailNewsFragment"
-        android:name="com.example.newsbank.fragments.DetailNewsFragment"
+        android:name="com.example.newsbank.presentation.fragments.DetailNewsFragment"
         android:label="fragment_detail_news"
         tools:layout="@layout/fragment_detail_news" >
         <action
