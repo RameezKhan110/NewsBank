@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.example.newsbank.databinding.NewsItemBinding
-import com.example.newsbank.data.model.Article
+import com.example.newsbank.domain.model.News
 
 class NewsAdapter(
     private val onDetailClicked: (String) -> Unit
 ) :
-    ListAdapter<Article, NewsAdapter.NewsViewHolder>(DiffUtil()) {
+    ListAdapter<News, NewsAdapter.NewsViewHolder>(DiffUtil()) {
 
     class NewsViewHolder(binding: NewsItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -23,24 +23,24 @@ class NewsAdapter(
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val allNews = getItem(position)
         NewsItemBinding.bind(holder.itemView).apply() {
-            Glide.with(holder.itemView).load(allNews.urlToImage).into(newsImage)
-            newsTitle.text = allNews.title.toString()
-            newsContent.text = if (allNews.content != null) allNews.content.toString() else "null"
-            newsPublisher.text = if (allNews.author != null) allNews.author.toString() else "null"
-            newsPublishedDate.text = allNews.publishedAt.toString()
+            newsImage.load(allNews.image)
+            newsTitle.text = if(allNews.title.isNotEmpty()) allNews.title.toString() else "null"
+            newsContent.text = if(allNews.content.isNotEmpty()) allNews.content.toString() else "null"
+            newsPublisher.text = if (allNews.author!!.isNotEmpty()) allNews.author.toString() else "null"
+            newsPublishedDate.text = if(allNews.publishedAt.isNotEmpty()) allNews.publishedAt.toString() else " null"
             newsItem.setOnClickListener {
                 onDetailClicked(allNews.url)
             }
         }
     }
 
-    class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<Article>() {
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+    class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<News>() {
+        override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
             return oldItem.title == newItem.title
         }
 
         override fun areContentsTheSame(
-            oldItem: Article, newItem: Article
+            oldItem: News, newItem: News
         ): Boolean {
             return oldItem == newItem
         }

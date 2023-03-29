@@ -7,5 +7,5 @@ import retrofit2.Response
 
 interface NewsRepository {
 
-    suspend fun getNews(): Flow<Response<NewsArticle>>
+    suspend fun getNews(country: String, page: Int): Response<NewsArticle>
 }

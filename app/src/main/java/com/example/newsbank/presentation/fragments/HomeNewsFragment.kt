@@ -1,7 +1,6 @@
 package com.example.newsbank.presentation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +16,7 @@ import com.example.newsbank.presentation.adapter.NewsAdapter
 import com.example.newsbank.databinding.FragmentHomeNewsBinding
 import com.example.newsbank.presentation.viewmodel.NewsViewModel
 import com.example.newsbank.presentation.viewmodel.SharedViewModel
-import com.example.newsbank.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -38,7 +31,7 @@ class HomeNewsFragment : Fragment() {
     ): View? {
         binding = FragmentHomeNewsBinding.inflate(layoutInflater, container, false)
 
-        newsViewModel.getNews()
+        newsViewModel.getNews("us", 1)
 
         val newsAdapter = NewsAdapter() { url ->
             sharedViewModel.gerUrl(url)
@@ -48,24 +41,21 @@ class HomeNewsFragment : Fragment() {
         binding.newsRecyclerView.adapter = newsAdapter
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        newsViewModel.liveNewsList.observe(viewLifecycleOwner, Observer { news ->
-            when (news.status) {
-                Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.newsRecyclerView.visibility = View.VISIBLE
-                    newsAdapter.submitList(news.data?.articles)
-                }
-                Status.LOADING -> {
+        lifecycleScope.launch {
+            newsViewModel.newList.collect() { news ->
+                if (news.loading) {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.newsRecyclerView.visibility = View.GONE
-                }
-                Status.ERROR -> {
+                } else if (news.error.isNotBlank()) {
                     binding.progressBar.visibility = View.GONE
                     binding.newsRecyclerView.visibility = View.VISIBLE
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                    binding.newsRecyclerView.visibility = View.VISIBLE
+                    newsAdapter.submitList(news.data)
                 }
             }
-        })
-
+        }
         return binding.root
     }
 }
