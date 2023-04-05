@@ -26,6 +26,8 @@ class DetailNewsFragment : Fragment() {
     ): View? {
         binding = FragmentDetailNewsBinding.inflate(layoutInflater, container, false)
 
+        activity?.title = "News Article"
+
         sharedViewModel.liveUrl.observe(viewLifecycleOwner, Observer { url ->
             binding.DetailWebView.apply {
                 loadUrl(url)

@@ -24,11 +24,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesHttpClient() : OkHttpClient = OkHttpClient
+    fun providesHttpClient(authInterceptor: AuthInterceptor) : OkHttpClient = OkHttpClient
         .Builder()
         .readTimeout(15, TimeUnit.SECONDS)
         .connectTimeout(15, TimeUnit.SECONDS)
-        .addInterceptor(AuthInterceptor(Constants.AUTH_TOKEN))
+        .addInterceptor(authInterceptor)
         .build()
 
     @Provides

@@ -31,6 +31,8 @@ class HomeNewsFragment : Fragment() {
     ): View? {
         binding = FragmentHomeNewsBinding.inflate(layoutInflater, container, false)
 
+        activity?.title = "News Feed"
+
         newsViewModel.getNews("us", 1)
 
         val newsAdapter = NewsAdapter() { url ->
@@ -57,5 +59,10 @@ class HomeNewsFragment : Fragment() {
             }
         }
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding == null
     }
 }

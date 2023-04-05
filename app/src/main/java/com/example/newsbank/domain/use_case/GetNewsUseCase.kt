@@ -20,7 +20,9 @@ class GetNewsUseCase @Inject constructor(private val newsRepository: NewsReposit
 
             val response = newsRepository.getNews(country, page)
 
-            val list = if(response.body()!!.articles.isNullOrEmpty()) emptyList<News>() else response.body()!!.articles.map { it.toDomainNews() }
+            val list = if(response.body()!!.articles.isEmpty()) emptyList<News>() else response.body()!!.articles.map {
+                it.toDomainNews()
+            }
             emit(Resource.Success(data = list))
             
         }catch (e: HttpException){
